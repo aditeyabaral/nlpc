@@ -1,27 +1,25 @@
-void Punctuations(char *sent2, char *sent3)
+char* Punctuations(char *sent)
 {
 	char punc[] = {'\'', '!', ']', '{', '#', '.', '<', '/', '(', '~', ',', '%', ';', '`', ':', '?', '+', '$', '^', '\\', '@', '*', '}', '=', '_', '\"', ')', '-', '|', '[', '&', '>'};
-	int check;int ctr = 0;
-	for (int i = 0; i< strlen(sent2); i++)
+	int check, ctr = 0;
+	char *s = (char*)malloc(sizeof(char)*10000);
+	for (int i = 0; i< strlen(sent); i++)
 	{
 		check = 0;
 		for (int j = 0; j< 31; j++)
 		{
-			
-			if ((char)sent2[i] == (char)punc[j])
+			if ((char)sent[i] == (char)punc[j])
 			{
 				check = 1;
-
 				break;
 			}
-			
 		}
 		if (check==0)
 		{
-			sent3[ctr] = sent2[i];
+			s[ctr] = sent[i];
 			ctr++;
 		}	
 	}
-	sent3[ctr]='\0';	
-	return;
+	s[ctr]='\0';	
+	return s;
 }
