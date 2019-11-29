@@ -1,4 +1,3 @@
-#include "Final header.h"
 int LevenshteinDistance(char *s1, char*s2)
 {
 	int len1 = strlen(s1), len2= strlen(s2);
