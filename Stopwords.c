@@ -1,8 +1,5 @@
-#include "Final header.h"
-
-void Stopwords(char *sent1,char *sent2)
+char* stopwords(char *sent)
 {
-	char word[20], temp[20];
 	char stopw[179][20]={"she\'s", "them", "were", "into", "weren\'t", "before", "had", "from", 
 	"how", "doesn\'t", "on", "again", "to", "we", "did", "mustn\'t", "all", "own", "as", "shan\'t",
 	"so", "now", "have", "you\'ll", "been", "such", "having", "yourself", "while", "he", "more",
@@ -19,17 +16,21 @@ void Stopwords(char *sent1,char *sent2)
 	"a", "wasn", "hasn\'t", "this", "they", "if", "no", "d", "wouldn\'t", "through", "his", "what",
 	"shan", "but", "each", "havent\'t", "about", "theirs", "being", "ma", "do", "ve", "haven", "under",
 	"mustn", "which", "myself", "won", "during", "its", "will", "nor", "didn", "wouldn", "these", "ll", "those", "here"};
+	char *s = (char*)malloc(sizeof(char)*100000);
+	strcpy(s,"");
+	char temp[100000];
+	strcpy(temp,sent);
 	int check;
-	char* token=strtok(sent1," ");
+	char* token=strtok(temp," ");
+	char word[20];
 	while(token!=NULL)
 	{
 		strcpy(word, token);
-		strcpy(temp,word);
-		strlwr(temp);
+		strlwr(word);
 		check = 0;
 		for(int i=0;i<=178;i++)
 		{
-			if(strcmp(temp,stopw[i])==0)
+			if(!strcmp(word,stopw[i]))
 			{
 				check = 1;
 				break;
@@ -37,10 +38,10 @@ void Stopwords(char *sent1,char *sent2)
 		}
 		if (check!=1)
 			{
-				strcat(word," ");
-				strcat(sent2,word);
+				strcat(s,token);
+				strcat(s," ");
 			}
 		token = strtok(NULL, " ");
 	}
-	return;
+	return s;
 }
