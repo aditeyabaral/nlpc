@@ -1,8 +1,8 @@
 char* Contractions(char *sent)
 {
-	char* s = (char*)malloc(sizeof(char)*10000);
+	char* s = (char*)malloc(sizeof(char)*100000);
     strcpy(s,"");
-    char temp[10000];
+    char temp[100000];
     strcpy(temp,sent);
 	char key[124][15] = {"ain't", "aren't", "can't", "can't've", "'cause", "could've", "couldn't", "couldn't've", "didn't", "doesn't",
     "don't", "hadn't", "hadn't've", "hasn't", "haven't", "he'd", "he'd've", "he'll", "he'll've", "he's", "how'd", "how'd'y", "how'll",
