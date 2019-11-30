@@ -2,7 +2,7 @@ char* Punctuations(char *sent)
 {
 	char punc[] = {'\'', '!', ']', '{', '#', '.', '<', '/', '(', '~', ',', '%', ';', '`', ':', '?', '+', '$', '^', '\\', '@', '*', '}', '=', '_', '\"', ')', '-', '|', '[', '&', '>'};
 	int check, ctr = 0;
-	char *s = (char*)malloc(sizeof(char)*10000);
+	char *s = (char*)malloc(sizeof(char)*100000);
 	for (int i = 0; i< strlen(sent); i++)
 	{
 		check = 0;
