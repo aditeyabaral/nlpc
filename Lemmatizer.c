@@ -30,8 +30,6 @@ struct graph
     FIRST *head;
 };
 typedef struct graph GRAPH;
-void lemmatizer();
-char *lemmatize(char*);
 GRAPH *graph;
 void lemmatizer()
 {
