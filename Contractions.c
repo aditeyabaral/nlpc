@@ -1,4 +1,4 @@
-char* Contractions(char *sent)
+char* remove_contractions(char *sent)
 {
 	char* s = (char*)malloc(sizeof(char)*100000);
     strcpy(s,"");
