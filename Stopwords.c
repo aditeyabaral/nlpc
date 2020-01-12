@@ -1,4 +1,4 @@
-char* stopwords(char *sent)
+char* remove_stopwords(char *sent)
 {
 	char stopw[179][20]={"she\'s", "them", "were", "into", "weren\'t", "before", "had", "from", 
 	"how", "doesn\'t", "on", "again", "to", "we", "did", "mustn\'t", "all", "own", "as", "shan\'t",
