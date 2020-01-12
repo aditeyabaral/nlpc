@@ -1,4 +1,4 @@
-char* Punctuations(char *sent)
+char* remove_punctuations(char *sent)
 {
 	char punc[] = {'\'', '!', ']', '{', '#', '.', '<', '/', '(', '~', ',', '%', ';', '`', ':', '?', '+', '$', '^', '\\', '@', '*', '}', '=', '_', '\"', ')', '-', '|', '[', '&', '>'};
 	int check, ctr = 0;
