@@ -1,3 +1,7 @@
+//Removes contractions from any given string and returns the modified string
+//Usage : remove_contractions(<character array>)
+//Dependencies : stdlib.h, stdio.h, string.h
+
 char* remove_contractions(char *sent)
 {
 	char* s = (char*)malloc(sizeof(char)*100000);
