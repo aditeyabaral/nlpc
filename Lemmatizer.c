@@ -1,35 +1,37 @@
 //Lemmatizes a word and returns the resulting word.
-//Usage -
-//Call the lemmatizer() function to intstantiate the lemmatizer before usage.
-//Call lemmatize(char*) on with any word as argument.
-// Dependencies : stdlib.h, stdio.h, string.h, VerbForms.csv
-struct node
+//Usage :
+//First call the lemmatizer() function to intstantiate the lemmatizer before usage, then call lemmatize(char*) with any word as argument - 
+//lemmatizer();lemmatize(<character array>)
+//Dependencies : stdlib.h, stdio.h, string.h, VerbForms.csv
+
+struct lemmanode
 {
     char word[20];
-    struct node *next;
-    struct node *lemma;
+    struct lemmanode *next;
+    struct lemmanode *lemma;
 };
-typedef struct node NODE;
+typedef struct lemmanode NODE;
 
 struct letter
 {
     char ch;
-    struct node *next;
+    struct lemmanode *next;
     struct letter *down;
 };
 typedef struct letter FIRST;
 
-struct list
+struct lemmalist
 {
     NODE *head;
 };
-typedef struct list LIST;
+typedef struct lemmalist LIST;
 
 struct graph
 {
     FIRST *head;
 };
 typedef struct graph GRAPH;
+
 GRAPH *graph;
 void lemmatizer()
 {
