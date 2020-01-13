@@ -1,3 +1,8 @@
+//Removes stopwords from any given string and returns the modified string
+//Usage : remove_stopwords(<character array>)
+//Dependencies : stdlib.h, stdio.h, string.h
+
+
 char* remove_stopwords(char *sent)
 {
 	char stopw[179][20]={"she\'s", "them", "were", "into", "weren\'t", "before", "had", "from", 
