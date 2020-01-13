@@ -1,3 +1,7 @@
+//Removes punctuations from any given string and returns the modified string
+//Usage : remove_punctuations(<character array>)
+//Dependencies : stdlib.h, stdio.h, string.h
+
 char* remove_punctuations(char *sent)
 {
 	char punc[] = {'\'', '!', ']', '{', '#', '.', '<', '/', '(', '~', ',', '%', ';', '`', ':', '?', '+', '$', '^', '\\', '@', '*', '}', '=', '_', '\"', ')', '-', '|', '[', '&', '>'};
