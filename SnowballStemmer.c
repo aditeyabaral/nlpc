@@ -1,3 +1,7 @@
+//Implementation of the Porter2 Stemmer or the Snowball Stemmer. Returns the stemmed word.
+//Usage : stem(<character array>)
+//Dependencies : stdlib.h, stdio.h, string.h
+
 struct wInfo
 {
    char *word;
