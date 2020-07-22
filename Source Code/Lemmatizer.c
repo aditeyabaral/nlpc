@@ -99,7 +99,7 @@ void lemmatizer()
     }
     fclose(fp);
 }
-char *lemmatize(char *s)
+char *lemmatize(LEMMATIZER* graph, char *s)
 {
     int ctr = 0;
     FIRST *pres = graph->head;
