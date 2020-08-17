@@ -4,6 +4,17 @@
 #include <limits.h>
 #include "nlpc.h"
 
+void displayArray(double **a, int m, int n)
+{
+    for(int i = 0; i<m ;i++)
+    {
+        for(int j = 0; j<n; j++)
+            printf("%lf ", a[i][j]);
+        printf("\n");
+    }
+    printf("\n");
+}
+
 int main()
 {
     char* s = (char*)malloc(sizeof(char)*INT_MAX);
@@ -37,4 +48,8 @@ int main()
     LEMMATIZER* lemma = lemmatizer();
     char* lemmatized = lemmatize(lemma, "aching");
     printf("Lemmatized version of 'aching' is: '%s'\n\n", lemmatized);
+
+    TFIDF* vec = tfidfVectorizer();
+    double**M = tfidfFitTransform(vec, s, true, true);
+    displayArray(vec->matrix, vec->docs, vec->vocab_size);
 }
