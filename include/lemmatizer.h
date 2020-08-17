@@ -94,3 +94,24 @@ LEMMATIZER *lemmatizer()
     fclose(fp);
     return graph;
 }
+
+char *lemmatize(LEMMATIZER *graph, char *str)
+{
+    int ctr = 0;
+    FIRST *pres = graph->head;
+    char x = str[0];
+    while (pres->ch != x)
+    {
+        ctr++;
+        pres = pres->down;
+    }
+    NODE *cur = pres->next;
+    while (cur != NULL)
+    {
+        ctr++;
+        if (strcmp(cur->word, str) == 0)
+            return cur->lemma->word;
+        cur = cur->next;
+    }
+    return str;
+}

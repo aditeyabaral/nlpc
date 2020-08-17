@@ -1,65 +1,6 @@
-#include "stemmer.h"
-#include "lemmatizer.h"
-/*
-Finds the minimum of two numbers, a and b
-*/
-int min(int a, int b);
-
-/*
-Converts a string to uppercase
-Usage: upper(string)
-*/
-char *upper(char *str);
-
-/*
-Converts a string to lowercase
-Usage: lower(string)
-*/
-char *lower(char *str);
-
-/*
-Removes contractions from any given string and returns the modified string
-Usage : remove_contractions(string)
-*/
-char *removeContractions(char *str);
-
-/*
-Trims any blank spaces before and after the string and returns the modified string
-Usage: trim(string)
-*/
-char *trim(char *str);
-
-/*
-Finds the minimum edit distance (Levenshtein's Distance) between two strings
-Usage: levenshteinDistance(string1, string2)
-*/
-int levenshteinDistance(char *word1, char *word2);
-
-/*
-Removes any kind of symbols from a string and returns the modified string
-Usage: removeSymbols(string)
-*/
-char *removeSymbols(char *str);
-
-/*
-Removes stopwords from any given string and returns the modified string
-Usage : removeStopwords(<character array>)
-*/
-char *removeStopwords(char *str);
-
-/*
-Implementation of the Porter2 Stemmer or the Snowball Stemmer. Returns the stemmed word.
-Usage : stem(string)
-*/
-char *stem(char *str);
-
-/*
-Lemmatizes a word and returns the resulting word.
-Usage :
-LEMMATIZER* lemmatizerObject = lemmatizer();
-lemmatize(lemmatizerObject, string);
-*/
-char *lemmatize(LEMMATIZER *graph, char *str);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int min(int a, int b)
 {
@@ -92,6 +33,105 @@ char *upper(char *str)
             result[i] = str[i];
     }
     return result;
+}
+
+char *trim(char *str)
+{
+    int len = strlen(str);
+    char *s = (char *)malloc(sizeof(char) * len);
+    int pos1 = 0, pos2 = len - 1, ctr = 0;
+    while (str[pos1] == ' ')
+        pos1++;
+    while (str[pos2] == ' ')
+        pos2--;
+    while (pos1 <= pos2)
+    {
+        s[ctr] = str[pos1];
+        pos1++;
+        ctr++;
+    }
+    s[pos1] = '\0';
+    return s;
+}
+
+
+char *removeStopwords(char *str)
+{
+    char stopw[179][20] = {"she\'s", "them", "were", "into", "weren\'t", "before", "had", "from",
+                           "how", "doesn\'t", "on", "again", "to", "we", "did", "mustn\'t", "all", "own", "as", "shan\'t",
+                           "so", "now", "have", "you\'ll", "been", "such", "having", "yourself", "while", "he", "more",
+                           "hadn", "hers", "out", "most", "above", "ain", "up", "against", "of", "has", "and", "you\'ve",
+                           "not", "my", "should\'ve", "am", "s", "doing", "him", "aren\'t", "only", "off", "you", "o",
+                           "down", "that\'ll", "isn", "m", "by", "me", "needn", "himself", "in", "some", "ourselves",
+                           "the", "then", "same", "wasn\'t", "who", "weren", "over", "re", "hasn", "can", "was", "y",
+                           "needn\'t", "yours", "very", "after", "be", "below", "between", "does", "just", "ours", "when",
+                           "won\'t", "it\'s", "it", "didn\'t", "i", "don\'t", "their", "with", "you\'d", "further",
+                           "herself", "haven\'t", "yourselves", "our", "than", "or", "aren", "should", "whom", "once",
+                           "don", "other", "themselves", "why", "itself", "at", "shouldn\'t", "hadn\'t", "few", "there",
+                           "any", "because", "is", "her", "mightn", "too", "an", "your", "that", "she", "where", "couldn",
+                           "couldn\'t", "both", "mightn\'t", "until", "you\'re", "shouldn", "isn\'t", "for", "doesn", "are",
+                           "a", "wasn", "hasn\'t", "this", "they", "if", "no", "d", "wouldn\'t", "through", "his", "what",
+                           "shan", "but", "each", "havent\'t", "about", "theirs", "being", "ma", "do", "ve", "haven", "under",
+                           "mustn", "which", "myself", "won", "during", "its", "will", "nor", "didn", "wouldn", "these", "ll", "those", "here"};
+    int len = strlen(str);
+    char *s = (char *)malloc(sizeof(char) * len);
+    char *temp = (char *)malloc(sizeof(char) * len);
+    char word[50];
+    strcpy(s, "");
+    strcpy(temp, str);
+    int check;
+    char *token, *save;
+    token = strtok_r(temp, " ", &save);
+    while (token != NULL)
+    {
+        strcpy(word, lower(token));
+        check = 0;
+        for (int i = 0; i <= 178; i++)
+        {
+            if (!strcmp(word, stopw[i]))
+            {
+                check = 1;
+                break;
+            }
+        }
+        if (check != 1)
+        {
+            strcat(s, token);
+            strcat(s, " ");
+        }
+        token = strtok_r(NULL, " ", &save);
+    }
+    s = trim(s);
+    return s;
+}
+
+char *removeSymbols(char *str)
+{
+    char punc[] = {'\n', '\'', '!', ']', '{', '#', '.', '<', '/', '(', '~', ',', '%', ';', '`', ':', '?', '+', '$', '^', '\\', '@', '*', '}', '=', '_', '\"', ')', '-', '|', '[', '&', '>'};
+    int check, ctr = 0, len = strlen(str);
+    char *s = (char *)malloc(sizeof(char) * len);
+    for (int i = 0; i < len; i++)
+    {
+        check = 0;
+        for (int j = 0; j < 33; j++)
+        {
+            if ((char)str[i] == (char)punc[j])
+            {
+                check = 1;
+                break;
+            }
+        }
+        if (!check || str[i] == '\n')
+        {
+            if (str[i] == '\n')
+                s[ctr] = ' ';
+            else
+                s[ctr] = str[i];
+            ctr++;
+        }
+    }
+    s[ctr] = '\0';
+    return s;
 }
 
 char *removeContractions(char *str)
@@ -152,50 +192,6 @@ char *removeContractions(char *str)
     return s;
 }
 
-char *removeSymbols(char *str)
-{
-    char punc[] = {'\n', '\'', '!', ']', '{', '#', '.', '<', '/', '(', '~', ',', '%', ';', '`', ':', '?', '+', '$', '^', '\\', '@', '*', '}', '=', '_', '\"', ')', '-', '|', '[', '&', '>'};
-    int check, ctr = 0, len = strlen(str);
-    char *s = (char *)malloc(sizeof(char) * len);
-    for (int i = 0; i < len; i++)
-    {
-        check = 0;
-        for (int j = 0; j < 33; j++)
-        {
-            if ((char)str[i] == (char)punc[j])
-            {
-                check = 1;
-                break;
-            }
-        }
-        if (!check)
-        {
-            s[ctr] = str[i];
-            ctr++;
-        }
-    }
-    s[ctr] = '\0';
-    return s;
-}
-
-char *trim(char *str)
-{
-    int len = strlen(str);
-    char *s = (char *)malloc(sizeof(char) * len);
-    int pos1 = 0, pos2 = len - 1, ctr = 0;
-    while (str[pos1] == ' ')
-        pos1++;
-    while (str[pos2] == ' ')
-        pos2--;
-    while (pos1 <= pos2)
-    {
-        s[ctr] = str[pos1];
-        pos1++;
-        ctr++;
-    }
-    s[pos1] = '\0';
-    return s;
-}
 
 int levenshteinDistance(char *str1, char *str2)
 {
@@ -229,86 +225,54 @@ int levenshteinDistance(char *str1, char *str2)
     }
 }
 
-char *removeStopwords(char *str)
+char* char_ngram(char* s, int n)
 {
-    char stopw[179][20] = {"she\'s", "them", "were", "into", "weren\'t", "before", "had", "from",
-                           "how", "doesn\'t", "on", "again", "to", "we", "did", "mustn\'t", "all", "own", "as", "shan\'t",
-                           "so", "now", "have", "you\'ll", "been", "such", "having", "yourself", "while", "he", "more",
-                           "hadn", "hers", "out", "most", "above", "ain", "up", "against", "of", "has", "and", "you\'ve",
-                           "not", "my", "should\'ve", "am", "s", "doing", "him", "aren\'t", "only", "off", "you", "o",
-                           "down", "that\'ll", "isn", "m", "by", "me", "needn", "himself", "in", "some", "ourselves",
-                           "the", "then", "same", "wasn\'t", "who", "weren", "over", "re", "hasn", "can", "was", "y",
-                           "needn\'t", "yours", "very", "after", "be", "below", "between", "does", "just", "ours", "when",
-                           "won\'t", "it\'s", "it", "didn\'t", "i", "don\'t", "their", "with", "you\'d", "further",
-                           "herself", "haven\'t", "yourselves", "our", "than", "or", "aren", "should", "whom", "once",
-                           "don", "other", "themselves", "why", "itself", "at", "shouldn\'t", "hadn\'t", "few", "there",
-                           "any", "because", "is", "her", "mightn", "too", "an", "your", "that", "she", "where", "couldn",
-                           "couldn\'t", "both", "mightn\'t", "until", "you\'re", "shouldn", "isn\'t", "for", "doesn", "are",
-                           "a", "wasn", "hasn\'t", "this", "they", "if", "no", "d", "wouldn\'t", "through", "his", "what",
-                           "shan", "but", "each", "havent\'t", "about", "theirs", "being", "ma", "do", "ve", "haven", "under",
-                           "mustn", "which", "myself", "won", "during", "its", "will", "nor", "didn", "wouldn", "these", "ll", "those", "here"};
-    int len = strlen(str);
-    char *s = (char *)malloc(sizeof(char) * len);
-    char *temp = (char *)malloc(sizeof(char) * len);
-    char word[50];
-    strcpy(s, "");
-    strcpy(temp, str);
-    int check;
-    char *token, *save;
-    token = strtok_r(temp, " ", &save);
-    while (token != NULL)
+    char *ngram = (char*)calloc(INT_MAX, sizeof(char));
+    char temp[n+1];
+    int len = 0;
+    for(int i=0;i<strlen(s);i++)
     {
-        strcpy(word, lower(token));
-        check = 0;
-        for (int i = 0; i <= 178; i++)
+        strcpy(temp,"");
+        for(int j=0;j<n;j++)
+            temp[j] = s[i+j];
+        len+= n;
+        strcat(ngram,temp);
+        ngram[len+1] = '\n';
+    }
+    return ngram;
+}
+
+char* word_ngram(char*s, int n)
+{
+    char *ngram = (char*)calloc(INT_MAX,sizeof(char));
+    char *words = (char*)calloc(INT_MAX,sizeof(char));
+    int beg = 0, length = strlen(s);
+    s[length] = ' ';
+    length++;
+    for(int i=0;i<length;i++)
+    {
+        if (s[i]==' ')
         {
-            if (!strcmp(word, stopw[i]))
+            for(int j = 0;j<10000;j++)
+                words[j] = '\0';
+            int pos = 0;
+            for(int j=beg;j<i;j++)
+                words[pos++] = s[j];
+            int ctr = 0;
+            beg = i+1;
+            words[pos++] = ' ';
+            for(int j = i+1;j<length;j++)
             {
-                check = 1;
-                break;
+                if(ctr==(n-1))
+                    break;
+                if (s[j]==' ')
+                    ctr++;
+                words[pos++] = s[j];
             }
+            strcat(ngram,words);
+            ngram[strlen(ngram)] = '\n';
         }
-        if (check != 1)
-        {
-            strcat(s, token);
-            strcat(s, " ");
-        }
-        token = strtok_r(NULL, " ", &save);
     }
-    s = trim(s);
-    return s;
-}
-
-char *stem(char *str)
-{
-    int len = strlen(str);
-    char *word = (char *)malloc(sizeof(char) * len);
-    strcpy(word, str);
-    rule_1(word);
-    rule_2(word);
-    rule_3(word);
-    rule_4(word);
-    rule_5(word);
-    return word;
-}
-
-char *lemmatize(LEMMATIZER *graph, char *str)
-{
-    int ctr = 0;
-    FIRST *pres = graph->head;
-    char x = str[0];
-    while (pres->ch != x)
-    {
-        ctr++;
-        pres = pres->down;
-    }
-    NODE *cur = pres->next;
-    while (cur != NULL)
-    {
-        ctr++;
-        if (strcmp(cur->word, str) == 0)
-            return cur->lemma->word;
-        cur = cur->next;
-    }
-    return str;
+    s[length-1] = '\0';
+    return ngram;
 }
