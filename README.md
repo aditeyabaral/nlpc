@@ -5,4 +5,5 @@ A project made as a part of our C Programming course at PES University that atte
 *   Add summarize
 *   Add Jaccard's Similarity
 *   Validate ngrams
+*   Change struct names in w2v and lemmatizer
 *   Resolve conflict between preprocess.h in w2v and nlpc
