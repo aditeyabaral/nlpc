@@ -29,6 +29,5 @@ int main(){
 ```
 
 # To-Do
-*   Change struct names in w2v and lemmatizer
 *   Testing
 *   Code cleanup - memset, free() and so on
