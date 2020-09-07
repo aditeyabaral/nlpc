@@ -3,6 +3,7 @@
 #include "lemmatizer.h"
 #include "tfidf.h"
 #include "summary.h"
+#include "word2vec.h"
 
 /*
 Finds the minimum of two numbers, a and b

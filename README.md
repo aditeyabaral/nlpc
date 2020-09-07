@@ -30,6 +30,5 @@ int main(){
 
 # To-Do
 *   Change struct names in w2v and lemmatizer
-*   Resolve conflict between preprocess.h in w2v and nlpc
-*   Validate ngrams
+*   Testing
 *   Code cleanup - memset, free() and so on
