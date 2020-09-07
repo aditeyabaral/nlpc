@@ -2,6 +2,7 @@
 #include "stemmer.h"
 #include "lemmatizer.h"
 #include "tfidf.h"
+#include "summary.h"
 
 /*
 Finds the minimum of two numbers, a and b
