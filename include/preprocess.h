@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 int min(int a, int b)
 {
@@ -40,9 +41,9 @@ char *trim(char *str)
     int len = strlen(str);
     char *s = (char *)malloc(sizeof(char) * len);
     int pos1 = 0, pos2 = len - 1, ctr = 0;
-    while (str[pos1] == ' ')
+    while (str[pos1] == ' ' || str[pos1] == '\n' || str[pos1] == '\t')
         pos1++;
-    while (str[pos2] == ' ')
+    while (str[pos2] == ' ' || str[pos2] == '\n' || str[pos2] == '\t')
         pos2--;
     while (pos1 <= pos2)
     {
@@ -74,35 +75,48 @@ char *removeStopwords(char *str)
                            "shan", "but", "each", "havent\'t", "about", "theirs", "being", "ma", "do", "ve", "haven", "under",
                            "mustn", "which", "myself", "won", "during", "its", "will", "nor", "didn", "wouldn", "these", "ll", "those", "here"};
     int len = strlen(str);
-    char *s = (char *)malloc(sizeof(char) * len);
+    char *sent = (char *)malloc(sizeof(char) * len);
     char *temp = (char *)malloc(sizeof(char) * len);
-    char word[50];
-    strcpy(s, "");
+    char *result = (char *)malloc(sizeof(char) * len);
+    strcpy(sent, "");
     strcpy(temp, str);
+    strcpy(result, "");
+
     int check;
-    char *token, *save;
-    token = strtok_r(temp, " ", &save);
-    while (token != NULL)
+    char *token1, *save1, *token2, *save2, *sentence;
+    token1 = strtok_r(temp, "\n", &save1);
+    
+    while(token1 != NULL)
     {
-        strcpy(word, lower(token));
-        check = 0;
-        for (int i = 0; i <= 178; i++)
+        sentence = lower(token1);
+        token2 = strtok_r(sentence, " ", &save2);
+        while(token2 != NULL)
         {
-            if (!strcmp(word, stopw[i]))
+            check = 1;
+            for(int i = 0; i<179; i++)
             {
-                check = 1;
-                break;
+                if (!strcmp(token2, stopw[i]))
+                {
+                    check = 0;
+                    break;
+                }
             }
+            if(check)
+            {
+                strcat(sent, token2);
+                strcat(sent, " ");
+            }
+            token2 = strtok_r(NULL, " ", &save2);
         }
-        if (check != 1)
-        {
-            strcat(s, token);
-            strcat(s, " ");
-        }
-        token = strtok_r(NULL, " ", &save);
+        free(sentence);
+        strcat(sent, "\n");
+        token1 = strtok_r(NULL, "\n", &save1);
     }
-    s = trim(s);
-    return s;
+
+    result = trim(sent);
+    free(sent);
+    free(temp);
+    return result;
 }
 
 char *removeSymbols(char *str)
@@ -275,4 +289,53 @@ char* word_ngram(char*s, int n)
     }
     s[length-1] = '\0';
     return ngram;
+}
+
+char* removeSentenceSeparators(char* corpus)
+{
+    int length = strlen(corpus);
+    char* result = (char*)malloc(sizeof(char)*length);
+    memset(result, 0, length);
+    char sent_separator[] = {'.', '!', '?', '\n'};
+    bool check; char sep; int pos = 0;
+    for(int i = 0; i<length; i++)
+    {
+        check = false;
+        for(int j = 0; j<4; j++)
+        {
+            if(corpus[i] == sent_separator[j])
+            {
+                check = true;
+                sep = sent_separator[j];
+                break;
+            }
+        }
+        if(check)
+                result[pos++] = '\n';
+        else
+            result[pos++] = corpus[i];
+    }
+    return result;
+}
+
+char* getSentenceSeparators(char* corpus)
+{
+    int length = strlen(corpus);
+    char* result = (char*)malloc(sizeof(char)*length);
+    memset(result, 0, length);
+    char sent_separator[] = {'.', '!', '?'};
+    int pos = 0;
+    for(int i = 0; i<length; i++)
+    {
+        for(int j = 0; j<3; j++)
+        {
+            if(corpus[i] == sent_separator[j])
+            {
+                result[pos] = sent_separator[j];
+                pos++;
+                break;
+            }
+        }
+    }
+    return result;
 }

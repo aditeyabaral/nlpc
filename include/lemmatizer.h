@@ -4,7 +4,7 @@ struct lemmanode
     struct lemmanode *next;
     struct lemmanode *lemma;
 };
-typedef struct lemmanode NODE;
+typedef struct lemmanode LEMMANODE;
 
 struct letter
 {
@@ -16,7 +16,7 @@ typedef struct letter FIRST;
 
 struct lemmalist
 {
-    NODE *head;
+    LEMMANODE *head;
 };
 typedef struct lemmalist LIST;
 
@@ -58,13 +58,13 @@ LEMMATIZER *lemmatizer()
         strcpy(temp, s);
         token = strtok_r(temp, ",", &save);
         x = token[0];
-        NODE *l = (NODE *)malloc(sizeof(NODE));
+        LEMMANODE *l = (LEMMANODE *)malloc(sizeof(LEMMANODE));
         l->next = l->lemma = NULL;
         strcpy(l->word, token);
         token = strtok_r(NULL, ",", &save);
         while (token != NULL)
         {
-            NODE *node = (NODE *)malloc(sizeof(NODE));
+            LEMMANODE *node = (LEMMANODE *)malloc(sizeof(LEMMANODE));
             strcpy(node->word, token);
             node->lemma = l;
             node->next = NULL;
@@ -79,8 +79,8 @@ LEMMATIZER *lemmatizer()
             }
             else
             {
-                NODE *cur = pres->next;
-                NODE *prev = NULL;
+                LEMMANODE *cur = pres->next;
+                LEMMANODE *prev = NULL;
                 while (cur != NULL)
                 {
                     prev = cur;
@@ -105,7 +105,7 @@ char *lemmatize(LEMMATIZER *graph, char *str)
         ctr++;
         pres = pres->down;
     }
-    NODE *cur = pres->next;
+    LEMMANODE *cur = pres->next;
     while (cur != NULL)
     {
         ctr++;
