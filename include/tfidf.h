@@ -37,7 +37,7 @@ void tfidfFitVocabulary(TFIDF *vectorizer, char *corpus)
   char *temp = (char *)malloc(sizeof(char) * INT_MAX);
 
   token1 = strtok_r(trimmed, "\n", &save1);
-  strcpy(vocab, "");
+  memset(vocab, 0, INT_MAX);
   int vocab_size = 0;
   bool flag;
 
@@ -201,7 +201,7 @@ double **tfidfTransform(TFIDF *vectorizer, char *corpus, bool use_idf, bool smoo
       strcpy(word, "");
     }
     row++;
-    strcpy(document, "");
+    memset(document, 0, INT_MAX);
     strcpy(temp_vocab, "");
     strcpy(word, "");
     token1 = strtok_r(NULL, "\n", &save1);
