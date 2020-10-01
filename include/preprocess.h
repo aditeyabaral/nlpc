@@ -55,7 +55,6 @@ char *trim(char *str)
     return s;
 }
 
-
 char *removeStopwords(char *str)
 {
     char stopw[179][20] = {"she\'s", "them", "were", "into", "weren\'t", "before", "had", "from",
@@ -78,22 +77,22 @@ char *removeStopwords(char *str)
     char *sent = (char *)malloc(sizeof(char) * len);
     char *temp = (char *)malloc(sizeof(char) * len);
     char *result = (char *)malloc(sizeof(char) * len);
-    strcpy(sent, "");
-    strcpy(temp, str);
-    strcpy(result, "");
+    memset(sent, 0, len);
+    memset(temp, 0, len);
+    memset(result, 0, len);
 
     int check;
     char *token1, *save1, *token2, *save2, *sentence;
     token1 = strtok_r(temp, "\n", &save1);
-    
-    while(token1 != NULL)
+
+    while (token1 != NULL)
     {
         sentence = lower(token1);
         token2 = strtok_r(sentence, " ", &save2);
-        while(token2 != NULL)
+        while (token2 != NULL)
         {
             check = 1;
-            for(int i = 0; i<179; i++)
+            for (int i = 0; i < 179; i++)
             {
                 if (!strcmp(token2, stopw[i]))
                 {
@@ -101,7 +100,7 @@ char *removeStopwords(char *str)
                     break;
                 }
             }
-            if(check)
+            if (check)
             {
                 strcat(sent, token2);
                 strcat(sent, " ");
@@ -152,7 +151,7 @@ char *removeContractions(char *str)
 {
     int len = strlen(str);
     char *s = (char *)malloc(sizeof(char) * len);
-    strcpy(s, "");
+    memset(s, 0, len);
     char *temp = (char *)malloc(sizeof(char) * 2 * len);
     strcpy(temp, str);
     char key[124][15] = {"ain't", "aren't", "can't", "can't've", "'cause", "could've", "couldn't", "couldn't've", "didn't", "doesn't",
@@ -206,7 +205,6 @@ char *removeContractions(char *str)
     return s;
 }
 
-
 int levenshteinDistance(char *str1, char *str2)
 {
     int n1 = strlen(str1);
@@ -239,97 +237,99 @@ int levenshteinDistance(char *str1, char *str2)
     }
 }
 
-char* char_ngram(char* s, int n)
+char *char_ngram(char *s, int n)
 {
-    char *ngram = (char*)calloc(INT_MAX, sizeof(char));
-    char temp[n+1];
+    char *ngram = (char *)calloc(INT_MAX, sizeof(char));
+    char temp[n + 1];
     int len = 0;
-    for(int i=0;i<strlen(s);i++)
+    for (int i = 0; i < strlen(s); i++)
     {
-        strcpy(temp,"");
-        for(int j=0;j<n;j++)
-            temp[j] = s[i+j];
-        len+= n;
-        strcat(ngram,temp);
-        ngram[len+1] = '\n';
+        strcpy(temp, "");
+        for (int j = 0; j < n; j++)
+            temp[j] = s[i + j];
+        len += n;
+        strcat(ngram, temp);
+        ngram[len + 1] = '\n';
     }
     return ngram;
 }
 
-char* word_ngram(char*s, int n)
+char *word_ngram(char *s, int n)
 {
-    char *ngram = (char*)calloc(INT_MAX,sizeof(char));
-    char *words = (char*)calloc(INT_MAX,sizeof(char));
+    char *ngram = (char *)calloc(INT_MAX, sizeof(char));
+    char *words = (char *)calloc(INT_MAX, sizeof(char));
     int beg = 0, length = strlen(s);
     s[length] = ' ';
     length++;
-    for(int i=0;i<length;i++)
+    for (int i = 0; i < length; i++)
     {
-        if (s[i]==' ')
+        if (s[i] == ' ')
         {
-            for(int j = 0;j<10000;j++)
+            for (int j = 0; j < 10000; j++)
                 words[j] = '\0';
             int pos = 0;
-            for(int j=beg;j<i;j++)
+            for (int j = beg; j < i; j++)
                 words[pos++] = s[j];
             int ctr = 0;
-            beg = i+1;
+            beg = i + 1;
             words[pos++] = ' ';
-            for(int j = i+1;j<length;j++)
+            for (int j = i + 1; j < length; j++)
             {
-                if(ctr==(n-1))
+                if (ctr == (n - 1))
                     break;
-                if (s[j]==' ')
+                if (s[j] == ' ')
                     ctr++;
                 words[pos++] = s[j];
             }
-            strcat(ngram,words);
+            strcat(ngram, words);
             ngram[strlen(ngram)] = '\n';
         }
     }
-    s[length-1] = '\0';
+    s[length - 1] = '\0';
     return ngram;
 }
 
-char* removeSentenceSeparators(char* corpus)
+char *removeSentenceSeparators(char *corpus)
 {
     int length = strlen(corpus);
-    char* result = (char*)malloc(sizeof(char)*length);
+    char *result = (char *)malloc(sizeof(char) * length);
     memset(result, 0, length);
     char sent_separator[] = {'.', '!', '?', '\n'};
-    bool check; char sep; int pos = 0;
-    for(int i = 0; i<length; i++)
+    bool check;
+    char sep;
+    int pos = 0;
+    for (int i = 0; i < length; i++)
     {
         check = false;
-        for(int j = 0; j<4; j++)
+        for (int j = 0; j < 4; j++)
         {
-            if(corpus[i] == sent_separator[j])
+            if (corpus[i] == sent_separator[j])
             {
                 check = true;
                 sep = sent_separator[j];
                 break;
             }
         }
-        if(check)
-                result[pos++] = '\n';
+        if (check)
+            result[pos++] = '\n';
         else
             result[pos++] = corpus[i];
     }
     return result;
 }
 
-char* getSentenceSeparators(char* corpus)
+char *getSentenceSeparators(char *corpus)
 {
     int length = strlen(corpus);
-    char* result = (char*)malloc(sizeof(char)*length);
+    char *result = (char *)malloc(sizeof(char) * length);
     memset(result, 0, length);
     char sent_separator[] = {'.', '!', '?'};
     int pos = 0;
-    for(int i = 0; i<length; i++)
+    for (int i = 0; i < length; i++)
     {
-        for(int j = 0; j<3; j++)
+        for (int j = 0; j < 3; j++)
         {
-            if(corpus[i] == sent_separator[j])
+            if (corpus[i] == sent_separator[j])
             {
                 result[pos] = sent_separator[j];
                 pos++;

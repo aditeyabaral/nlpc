@@ -27,7 +27,3 @@ int main(){
     ...
 }
 ```
-
-# To-Do
-*   Testing
-*   Code cleanup - memset, free() and so on

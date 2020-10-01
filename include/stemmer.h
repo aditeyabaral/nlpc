@@ -592,13 +592,13 @@ void rule_5(char *word)
 
 char *stem(char *str)
 {
-    int len = strlen(str);
-    char *word = (char *)malloc(sizeof(char) * len);
-    strcpy(word, str);
-    rule_1(word);
-    rule_2(word);
-    rule_3(word);
-    rule_4(word);
-    rule_5(word);
-    return word;
+	int len = strlen(str);
+	char *word = (char *)malloc(sizeof(char) * len);
+	strcpy(word, str);
+	rule_1(word);
+	rule_2(word);
+	rule_3(word);
+	rule_4(word);
+	rule_5(word);
+	return word;
 }
