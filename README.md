@@ -360,7 +360,7 @@ Obtain the inverse document frequency of a word in a corpus
 	- char *corpus: String with all the documents separated by newline,
 	- int n: The number of documents in the corpus, 
 	- bool use_idf: Enable inverse-document-frequency reweighting, 
-        - bool smooth_idf:Smooth idf weights by adding one to document frequencies, as if an extra document was seen containing every term in the collection exactly                       once. Prevents zero divisions.		
+	- bool smooth_idf:Smooth idf weights by adding one to document frequencies, as if an extra document was seen containing every term in the collection exactly                       once. Prevents zero divisions.		
 
 - Returns double: the inverse document frequency of a word in a corpus
 
