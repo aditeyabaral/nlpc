@@ -10,7 +10,6 @@ struct letter
 {
     char ch;
     struct lemmanode *next;
-    struct letter *down;
 };
 typedef struct letter FIRST;
 
@@ -26,30 +25,20 @@ struct graph
 };
 typedef struct graph LEMMATIZER;
 
+static int hash(char a) {
+    return a - 'a';
+}
+
 LEMMATIZER *lemmatizer()
 {
     LEMMATIZER *graph = (LEMMATIZER *)malloc(sizeof(LEMMATIZER));
-    FIRST *A = (FIRST *)malloc(sizeof(FIRST));
-    A->ch = 'a';
-    A->down = NULL;
-    A->next = NULL;
-    graph->head = A;
-
-    FIRST *pres = graph->head;
-    int ctr = 98;
-
-    while (ctr <= 122)
-    {
-        FIRST *node = (FIRST *)malloc(sizeof(FIRST));
-        node->ch = (char)ctr;
-        node->down = NULL;
-        node->next = NULL;
-        pres->down = node;
-        pres = pres->down;
-        ctr++;
+    graph->head = (FIRST *)calloc(sizeof(FIRST), 26);
+    for (int i = 0; i < 26; ++i) {
+        graph->head[i].ch = i+'a';
+        graph->head[i].next = NULL;
     }
 
-    FILE *fp = fopen("VerbForms.csv", "r");
+    FILE *fp = fopen("include/VerbForms.csv", "r");
     char s[100], temp[100];
     char *token, *save;
     char x;
@@ -68,9 +57,7 @@ LEMMATIZER *lemmatizer()
             strcpy(node->word, token);
             node->lemma = l;
             node->next = NULL;
-            FIRST *pres = graph->head;
-            while (pres->ch != x)
-                pres = pres->down;
+            FIRST *pres = &graph->head[hash(x)];
             if (pres->next == NULL)
             {
                 LIST *l = (LIST *)malloc(sizeof(LIST));
@@ -98,13 +85,8 @@ LEMMATIZER *lemmatizer()
 char *lemmatize(LEMMATIZER *graph, char *str)
 {
     int ctr = 0;
-    FIRST *pres = graph->head;
     char x = str[0];
-    while (pres->ch != x)
-    {
-        ctr++;
-        pres = pres->down;
-    }
+    FIRST *pres = &graph->head[hash(x)];
     LEMMANODE *cur = pres->next;
     while (cur != NULL)
     {
