@@ -264,7 +264,7 @@ Lemmatizes a word and returns the resulting word4
 
 	- char *str: String to be lemmatized.
 
-Returns char *: Lemmatized string.
+- Returns char *: Lemmatized string.
 
 Usage:
 ```C
@@ -501,5 +501,5 @@ Usage:
 ```C
 EMBEDDING *model = createModel();
 char* corpus = "This is sentence one. This is sentence two.This is sentence three.And this is sentence four";
-train(model,corpus,2,4,0.01,100,1,TRUE);
+train(model,corpus,2,4,0.01,10,1,TRUE);
 ```
