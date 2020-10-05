@@ -27,6 +27,11 @@ int main(){
     ...
 }
 ```
+# Dependencies
+- stdio
+- stdlib
+- limits
+- stdbool
 
 # Documentation 
 ## preprocess.h
@@ -521,5 +526,5 @@ Usage:
 ```C
 EMBEDDING *model = createModel();
 char* corpus = "This is sentence one. This is sentence two.This is sentence three.And this is sentence four";
-train(model,corpus,2,4,0.01,10,1,TRUE);
+train(model,corpus,2,4,0.01,10,1,true);
 ```
