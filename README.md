@@ -244,7 +244,8 @@ LEMMATIZER *lemmatizer();
 ```
 
 Initialises the lemmatizer object
-Returns LEMMATIZER *: lemmatizer object
+
+- Returns LEMMATIZER *: lemmatizer object
 
 Usage
 ```c
@@ -450,6 +451,25 @@ Destroy the tfidf vectorizer and free up memory
 Usage:
 ```C
 destroyTfidfModel(vectorizer);
+```
+## summary.h
+
+### summarize
+
+```C
+char *summarize(char *doc, bool avg, int K)
+```
+- Parameters: 
+	- char *doc : The document to be summarized  
+	- bool avg : When set to TRUE, calculates average score for sentences to choose sentences
+	- int K: number of sentences in the summary
+
+- Returns: char *: The summarized document.
+
+Usage:
+```C
+char *doc = "This is first line of the document to be summarized.This is another line.And this is the third line";
+char *summary = summarize(doc,TRUE,2);
 ```
 
 ## word2vec.h
