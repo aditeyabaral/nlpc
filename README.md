@@ -32,6 +32,7 @@ int main(){
 - stdlib
 - limits
 - stdbool
+- string
 
 # Documentation 
 ## preprocess.h
